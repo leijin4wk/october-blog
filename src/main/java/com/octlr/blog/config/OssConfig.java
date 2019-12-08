@@ -13,7 +13,8 @@ public class OssConfig {
     private String localDbPath;
     @Value("${local.article.dir}")
     private String localArticlePath;
-
+    @Value("${local.web.dir}")
+    private String localWebDir;
     @Value("${remote.db.name}")
     private String remoteDbName;
     @Value("${remote.article.dir}")

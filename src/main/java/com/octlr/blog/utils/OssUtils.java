@@ -29,13 +29,13 @@ public class OssUtils {
         return null;
     }
 
-    public static void uploadFile(OssDto ossDto,String uploadFile,String uploadName){
+    public static void uploadFile(OssDto ossDto,File file,String uploadName){
         InputStream inputStream = null;
         try {
             OSS ossClient = new OSSClientBuilder().build(ossDto.getEndpoint(),
                     ossDto.getAccessKeyId(),
                     ossDto.getAccessKeySecret());
-            inputStream = new FileInputStream(uploadFile);
+            inputStream = new FileInputStream(file);
             PutObjectResult putObjectResult= ossClient.putObject(ossDto.getBucketName(),uploadName, inputStream);
             ossClient.shutdown();
         } catch (FileNotFoundException e) {

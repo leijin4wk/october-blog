@@ -32,7 +32,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class InitDBData implements ApplicationRunner {
+public class InitWebAndData {
     @Autowired
     private ArticleRepository articleRepository;
     @Autowired
@@ -41,8 +41,27 @@ public class InitDBData implements ApplicationRunner {
     private OssConfig ossConfig;
     private String jsonFileName = "info.json";
 
-    @Override
-    public void run(ApplicationArguments args) {
+    public void uploadStatic() {
+        OssDto ossDto = OssUtils.readProperty(ossConfig.getLocalConfigPath());
+        File file = new File(ossConfig.getLocalWebDir());
+        Iterator<File> iterator = FileUtils.iterateFiles(file, new FileFileFilter() {
+            public boolean accept(File file) {
+                return true;
+            }
+        }, new DirectoryFileFilter() {
+            public boolean accept(File file) {
+                return true;
+            }
+        });
+
+        while (iterator.hasNext()) {
+            File item=iterator.next();
+            String filePath=item.getAbsolutePath().replace(ossConfig.getLocalWebDir()+"\\","").replace("\\","/");
+            OssUtils.uploadFile(ossDto, item, filePath);
+        }
+        log.info("前端文件发布成功！");
+    }
+    public void uploadDataBase() {
         OssDto ossDto = OssUtils.readProperty(ossConfig.getLocalConfigPath());
         File file = new File(ossConfig.getLocalArticlePath());
         Iterator<File> iterator = FileUtils.iterateFiles(file, new FileFileFilter() {
@@ -68,11 +87,11 @@ public class InitDBData implements ApplicationRunner {
         }
         if(!CollectionUtils.isEmpty(list)){
             list.forEach(item->{
-                OssUtils.uploadFile(ossDto, ossConfig.getLocalArticlePath()+"/"+item.getUrl(),ossConfig.getRemoteArticleDir()+"/"+item.getUrl());
+                OssUtils.uploadFile(ossDto, new File(ossConfig.getLocalArticlePath()+"/"+item.getUrl()),ossConfig.getRemoteArticleDir()+"/"+item.getUrl());
             });
-            OssUtils.uploadFile(ossDto, ossConfig.getLocalDbPath(), ossConfig.getRemoteDbName());
+            OssUtils.uploadFile(ossDto, new File(ossConfig.getLocalDbPath()), ossConfig.getRemoteDbName());
         }
-        log.info("发布成功！");
+        log.info("数据库发布成功！");
     }
 
     public Classify saveClassify(JSONObject jsonObject) {
