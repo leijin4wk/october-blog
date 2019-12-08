@@ -94,7 +94,7 @@ public class InitDBData implements ApplicationRunner {
             article.setClassifyId(classifyId);
             article.setTitle(item.getString("title"));
             article.setOutline(item.getString("outline"));
-            article.setUrl(ossConfig.getRemoteArticleDir() + "/" + item.getString("filePath"));
+            article.setUrl(item.getString("filePath"));
             try {
                 article.setCreateTime(simpleDateFormat.parse(item.getString("createTime")));
             } catch (ParseException e) {
