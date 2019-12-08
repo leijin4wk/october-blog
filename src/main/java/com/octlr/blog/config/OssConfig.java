@@ -7,12 +7,16 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class OssConfig {
-    @Value("${oss.config.path}")
-    private String configPath;
-    @Value("${oss.db.path}")
-    private String dbPath;
-    @Value("${oss.db.name}")
-    private String dbName;
-    @Value("${oss.md.dir}")
-    private String mdPath;
+    @Value("${local.config.path}")
+    private String localConfigPath;
+    @Value("${local.db.path}")
+    private String localDbPath;
+    @Value("${local.article.dir}")
+    private String localArticlePath;
+
+    @Value("${remote.db.name}")
+    private String remoteDbName;
+    @Value("${remote.article.dir}")
+    private String remoteArticleDir;
+
 }

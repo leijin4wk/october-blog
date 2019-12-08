@@ -3,17 +3,14 @@ package com.octlr.blog.entity;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Data
-@Builder
 public class Article {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
     private Integer classifyId;
@@ -21,6 +18,8 @@ public class Article {
     private String title;
 
     private String outline;
+
+    private String url;
 
     private Date createTime;
 
