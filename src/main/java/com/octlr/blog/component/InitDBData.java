@@ -68,7 +68,7 @@ public class InitDBData implements ApplicationRunner {
         }
         if(!CollectionUtils.isEmpty(list)){
             list.forEach(item->{
-                OssUtils.uploadFile(ossDto, ossConfig.getLocalDbPath(),ossConfig.getRemoteArticleDir()+"/"+item.getUrl());
+                OssUtils.uploadFile(ossDto, ossConfig.getLocalArticlePath()+"/"+item.getUrl(),ossConfig.getRemoteArticleDir()+"/"+item.getUrl());
             });
             OssUtils.uploadFile(ossDto, ossConfig.getLocalDbPath(), ossConfig.getRemoteDbName());
         }
