@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Builder
-public class Classify {
+public class Category {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;

@@ -1,6 +1,5 @@
 package com.octlr.blog.entity;
 
-import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,7 +12,7 @@ public class Article {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer classifyId;
+    private Integer categoryId;
 
     private String title;
 
