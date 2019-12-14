@@ -16,9 +16,9 @@ public class Article {
 
     private String title;
 
-    private String outline;
+    private String description;
 
-    private String url;
+    private String content;
 
     private Date createTime;
 

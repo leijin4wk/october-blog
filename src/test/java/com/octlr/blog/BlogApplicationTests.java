@@ -1,32 +1,30 @@
 package com.octlr.blog;
 
-import com.octlr.blog.component.InitWebAndData;
-import com.octlr.blog.config.OssConfig;
-import com.octlr.blog.dto.OssDto;
-import com.octlr.blog.utils.OssUtils;
+import com.octlr.blog.common.BasePageResponse;
+import com.octlr.blog.entity.Article;
+import com.octlr.blog.repository.ArticleRepository;
+import com.octlr.blog.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.FileFileFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.io.File;
-import java.util.Iterator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 @SpringBootTest
 @Slf4j
 class BlogApplicationTests {
     @Autowired
-    private InitWebAndData initDBData;
+    private ArticleService articleService;
     @Test
-    void uploadStatic() {
-        initDBData.uploadStatic();
+    void findByPage() {
+        BasePageResponse<Article> pageResponse= articleService.findArticleByPage("t",0,10);
+        System.out.println(pageResponse);
     }
     @Test
-    public void uploadDataBase() {
-        initDBData.uploadDataBase();
+    void findById() {
+        Article article= articleService.findArticleById(2);
+        System.out.println(article);
     }
 
 }
