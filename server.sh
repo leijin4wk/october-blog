@@ -1,6 +1,6 @@
 #!/bin/bash
 #这里可替换为你自己的执行程序，其他代码无需更改
-APP_NAME=blog-0.0.1-SNAPSHOT.jar
+APP_NAME=./blog-0.0.1-SNAPSHOT.jar
 
 #使用说明，用来提示输入参数
 usage() {
