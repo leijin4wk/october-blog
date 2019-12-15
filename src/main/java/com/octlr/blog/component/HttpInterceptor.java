@@ -24,13 +24,13 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
 
     private List<String>  getExclusionsPath(){
         List<String> list=new ArrayList<>();
-        list.add("/");
-        list.add("/error");
-        list.add("/favicon.ico");
-        list.add("/article/search");
-        list.add("/article/search/*");
-        list.add("/article/category");
-        list.add("/category/search");
+        list.add("/api/");
+        list.add("/api/error");
+        list.add("/api/favicon.ico");
+        list.add("/api/article/search");
+        list.add("/api/article/search/*");
+        list.add("/api/article/category");
+        list.add("/api/category/search");
         return list;
     }
     private boolean matchExclusionsPath(String path){
