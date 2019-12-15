@@ -22,7 +22,7 @@ class BlogApplicationTests {
 
     @Test
     void findById() {
-        Article article = articleService.findArticleById(2);
+        Article article = articleService.findArticleById(1);
         System.out.println(article);
     }
 

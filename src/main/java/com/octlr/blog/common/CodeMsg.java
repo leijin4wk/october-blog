@@ -5,6 +5,7 @@ package com.octlr.blog.common;
 public enum  CodeMsg {
     Success(0,"success"),
     BusinessError(-1,"业务异常！"),
+    AuthError(-8,"权限异常！"),
     NotFoundError(-9,"资源不存在！"),
     ServerError(-10,"服务器内部异常！");
     private Integer code;

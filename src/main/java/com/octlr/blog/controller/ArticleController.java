@@ -15,14 +15,14 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @GetMapping("")
+    @GetMapping("/search")
     public BaseResponse<BasePageResponse<Article>> findArticleByPage(@RequestParam(defaultValue = "0") Integer pageNum,
                                                                      @RequestParam(defaultValue = "10")Integer pageSize)
     {
         return BaseResponse.success(articleService.findArticleByPage(pageNum,pageSize));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/search/{id}")
     public BaseResponse<Article> findArticleById(@PathVariable Integer id)
     {
         return BaseResponse.success(articleService.findArticleById(id));
@@ -40,7 +40,7 @@ public class ArticleController {
         return BaseResponse.success(articleService.existArticle(title,description));
     }
 
-    @PostMapping("/")
+    @PostMapping("/add")
     public BaseResponse<String> addArticle(@RequestBody Article article)
     {
         article.setCreateTime(new Date());
@@ -48,7 +48,7 @@ public class ArticleController {
         return BaseResponse.success("success");
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public BaseResponse<String> updateArticle(@PathVariable Integer id,@RequestBody Article article)
     {
         article.setId(id);

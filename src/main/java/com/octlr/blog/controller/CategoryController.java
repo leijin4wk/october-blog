@@ -15,7 +15,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/")
+    @GetMapping("/search")
     public BaseResponse<List<Category>> findAll()
     {
         return BaseResponse.success(categoryService.findAll());
@@ -25,7 +25,7 @@ public class CategoryController {
     {
         return BaseResponse.success(categoryService.existCategory(name));
     }
-    @PostMapping("/")
+    @PostMapping("/add")
     public BaseResponse<Category> addArticle(@RequestBody Category category)
     {
         category.setCreateTime(new Date());
