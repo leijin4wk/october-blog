@@ -17,8 +17,16 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleRepository articleRepository;
 
     @Override
-    public BasePageResponse<Article> findArticleByPage(String search, Integer pageNum, Integer pageSize) {
-        Page<Article> page= articleRepository.findByPage("一", PageRequest.of(pageNum,pageSize));
+    public BasePageResponse<Article> findArticleByPage(Integer pageNum, Integer pageSize) {
+        Page<Article> page= articleRepository.findByPage(PageRequest.of(pageNum,pageSize));
+        return BasePageResponse.<Article>builder().pageNum(pageNum).pageSize(pageSize)
+                .total(page.getTotalElements()).totalPages(page.getTotalPages())
+                .content(page.getContent()).build();
+    }
+
+    @Override
+    public BasePageResponse<Article> findArticleByCategoryId(Integer categoryId, Integer pageNum, Integer pageSize) {
+        Page<Article> page= articleRepository.findByCategoryId(categoryId,PageRequest.of(pageNum,pageSize));
         return BasePageResponse.<Article>builder().pageNum(pageNum).pageSize(pageSize)
                 .total(page.getTotalElements()).totalPages(page.getTotalPages())
                 .content(page.getContent()).build();
@@ -33,4 +41,11 @@ public class ArticleServiceImpl implements ArticleService {
     public void saveArticle(Article article) {
         articleRepository.save(article);
     }
+
+    @Override
+    public Boolean existArticle(String title, String description) {
+        Article article=articleRepository.findArticleByTitleAndDescription(title,description);
+        return article!=null?true:false;
+    }
+
 }

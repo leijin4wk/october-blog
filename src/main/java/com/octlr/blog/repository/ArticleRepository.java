@@ -7,8 +7,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ArticleRepository extends JpaRepository<Article,Integer> {
-    @Query(value = "SELECT * FROM Article WHERE title like %?1% or content  like %?1%",
-            countQuery = "SELECT count(*) FROM Article WHERE title like %?1% or content  like %?1%",
+    @Query(value = "SELECT * FROM Article",
+            countQuery = "SELECT count(*) FROM Article",
             nativeQuery = true)
-    Page<Article> findByPage(String querySearch, Pageable pageable);
+    Page<Article> findByPage(Pageable pageable);
+
+    @Query(value = "SELECT * FROM Article WHERE category_id =?1",
+            countQuery = "SELECT count(*) FROM Article WHERE category_id =?1",
+            nativeQuery = true)
+    Page<Article> findByCategoryId(Integer categoryId, Pageable pageable);
+
+
+    Article findArticleByTitleAndDescription(String title,String description);
 }
