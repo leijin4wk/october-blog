@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -14,4 +15,6 @@ public class Category {
     private Integer id;
 
     private String name;
+
+    private Date createTime;
 }

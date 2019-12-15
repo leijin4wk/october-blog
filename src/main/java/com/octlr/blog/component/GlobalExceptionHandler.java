@@ -16,14 +16,15 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public BaseResponse<String> exceptionHandler(Exception e){
-       e.printStackTrace();
         if(e instanceof BaseException) {
             BaseException exception = (BaseException) e;
+            log.error(exception.getMessage());
             return BaseResponse.error(exception.getMessage());
         }else if(e instanceof NoHandlerFoundException){
             return BaseResponse.error(CodeMsg.NotFoundError);
         }
         else {
+            e.printStackTrace();
             return BaseResponse.error(CodeMsg.ServerError);
         }
     }

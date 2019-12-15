@@ -11,8 +11,4 @@ public class OssConfig {
     private String localConfigPath;
     @Value("${local.db.path}")
     private String localDbPath;
-    @Value("${remote.db.name}")
-    private String remoteDbName;
-
-
 }

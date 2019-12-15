@@ -1,13 +1,12 @@
 package com.octlr.blog.controller;
 
-import com.octlr.blog.common.BasePageResponse;
 import com.octlr.blog.common.BaseResponse;
-import com.octlr.blog.entity.Article;
 import com.octlr.blog.entity.Category;
 import com.octlr.blog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -29,6 +28,7 @@ public class CategoryController {
     @PostMapping("/")
     public BaseResponse<Category> addArticle(@RequestBody Category category)
     {
+        category.setCreateTime(new Date());
         return BaseResponse.success(categoryService.saveCategory(category));
     }
 }

@@ -7,6 +7,8 @@ import com.octlr.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
@@ -41,6 +43,7 @@ public class ArticleController {
     @PostMapping("/")
     public BaseResponse<String> addArticle(@RequestBody Article article)
     {
+        article.setCreateTime(new Date());
         articleService.saveArticle(article);
         return BaseResponse.success("success");
     }
@@ -49,6 +52,7 @@ public class ArticleController {
     public BaseResponse<String> updateArticle(@PathVariable Integer id,@RequestBody Article article)
     {
         article.setId(id);
+        article.setUpdateTime(new Date());
         articleService.saveArticle(article);
         return BaseResponse.success("success");
     }

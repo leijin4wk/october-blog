@@ -35,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article findArticleById(Integer id) {
-        return articleRepository.findById(id).orElseThrow( () -> new BaseException("查询文章位空！"));
+        return articleRepository.findById(id).orElseThrow( () -> new BaseException("查询文章不存在！"));
     }
 
     @Override
