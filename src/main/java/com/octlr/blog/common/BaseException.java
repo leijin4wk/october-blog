@@ -3,15 +3,14 @@ package com.octlr.blog.common;
 public class BaseException extends RuntimeException {
     private String msg;
     public BaseException(CodeMsg codeMsg) {
-        super(codeMsg.toString());
+        super(codeMsg.getName());
         this.msg = codeMsg.getName();
     }
-    public BaseException(CodeMsg codeMsg,String message) {
-        super(codeMsg.toString());
+    public BaseException(String message) {
+        super(message);
         this.msg = message;
     }
-
-    public String getCodeMsg() {
+    public String getMsg() {
         return msg;
     }
 }

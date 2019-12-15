@@ -25,11 +25,11 @@ public class BaseResponse<T> {
         baseResponse.setData("");
         return baseResponse;
     }
-    public static BaseResponse<String> error(CodeMsg data,String msg){
+    public static BaseResponse<String> error(String msg){
         BaseResponse<String> baseResponse=new BaseResponse<>();
         baseResponse.setSuccess(false);
-        baseResponse.setCode(data.getCode());
-        baseResponse.setMsg(data.getName());
+        baseResponse.setCode(CodeMsg.BusinessError.getCode());
+        baseResponse.setMsg(CodeMsg.BusinessError.getName());
         baseResponse.setData(msg);
         return baseResponse;
     }

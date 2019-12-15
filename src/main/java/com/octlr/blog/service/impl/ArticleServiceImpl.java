@@ -1,5 +1,6 @@
 package com.octlr.blog.service.impl;
 
+import com.octlr.blog.common.BaseException;
 import com.octlr.blog.common.BasePageResponse;
 import com.octlr.blog.entity.Article;
 import com.octlr.blog.repository.ArticleRepository;
@@ -34,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article findArticleById(Integer id) {
-        return articleRepository.findById(id).orElseThrow( () -> new RuntimeException());
+        return articleRepository.findById(id).orElseThrow( () -> new BaseException("查询文章位空！"));
     }
 
     @Override
