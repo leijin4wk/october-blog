@@ -4,6 +4,7 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.PutObjectResult;
 import com.octlr.blog.config.SysConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 @Configuration
+@Slf4j
 public class BackupDataTask {
     @Autowired
     private SysConfig sysConfig;
@@ -22,8 +24,7 @@ public class BackupDataTask {
 
     @Scheduled(cron = "0 0/5 * * * ?")
     private void configureTasks() {
-
-        System.err.println("执行静态定时任务时间: " + sysConfig);
+        log.info("执行定时任务");
     }
 
     public void uploadDbFile(String uploadName) {
