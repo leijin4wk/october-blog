@@ -26,6 +26,7 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
         List<String> list=new ArrayList<>();
         list.add("/");
         list.add("/error");
+        list.add("/favicon.ico");
         list.add("/article/search");
         list.add("/article/search/*");
         list.add("/article/category");
