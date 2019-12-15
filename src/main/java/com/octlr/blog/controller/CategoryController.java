@@ -20,11 +20,7 @@ public class CategoryController {
     {
         return BaseResponse.success(categoryService.findAll());
     }
-    @GetMapping("/exist")
-    public BaseResponse<Boolean> existArticle( @RequestParam String name)
-    {
-        return BaseResponse.success(categoryService.existCategory(name));
-    }
+
     @PostMapping("/add")
     public BaseResponse<Category> addArticle(@RequestBody Category category)
     {

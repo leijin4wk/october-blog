@@ -22,12 +22,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Boolean existCategory(String name) {
-        Category category=categoryRepository.findCategoryByName(name);
-        return  category!=null?true:false;
-    }
-
-    @Override
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }

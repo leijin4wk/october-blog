@@ -16,7 +16,4 @@ public interface ArticleRepository extends JpaRepository<Article,Integer> {
             countQuery = "SELECT count(*) FROM Article WHERE category_id =?1",
             nativeQuery = true)
     Page<Article> findByCategoryId(Integer categoryId, Pageable pageable);
-
-
-    Article findArticleByTitleAndDescription(String title,String description);
 }

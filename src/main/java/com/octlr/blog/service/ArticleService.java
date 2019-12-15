@@ -11,6 +11,4 @@ public interface ArticleService {
     Article findArticleById(Integer id);
 
     void  saveArticle(Article article);
-
-    Boolean existArticle(String title,String description);
 }

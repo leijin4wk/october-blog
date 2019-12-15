@@ -8,8 +8,6 @@ public interface CategoryService {
 
     Category  saveCategory(Category category);
 
-    Boolean existCategory(String name);
-
     List<Category> findAll();
 
 }

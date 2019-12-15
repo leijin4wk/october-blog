@@ -34,12 +34,6 @@ public class ArticleController {
     {
         return BaseResponse.success(articleService.findArticleByCategoryId(categoryId,pageNum,pageSize));
     }
-    @GetMapping("/exist")
-    public BaseResponse<Boolean> existArticle( @RequestParam String title, @RequestParam String description)
-    {
-        return BaseResponse.success(articleService.existArticle(title,description));
-    }
-
     @PostMapping("/add")
     public BaseResponse<String> addArticle(@RequestBody Article article)
     {

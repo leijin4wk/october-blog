@@ -42,11 +42,4 @@ public class ArticleServiceImpl implements ArticleService {
     public void saveArticle(Article article) {
         articleRepository.save(article);
     }
-
-    @Override
-    public Boolean existArticle(String title, String description) {
-        Article article=articleRepository.findArticleByTitleAndDescription(title,description);
-        return article!=null?true:false;
-    }
-
 }
