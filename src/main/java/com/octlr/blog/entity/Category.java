@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Entity
 @Data
-@Builder
 public class Category {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
