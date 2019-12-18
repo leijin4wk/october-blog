@@ -4,6 +4,7 @@ import com.octlr.blog.common.BasePageResponse;
 import com.octlr.blog.common.BaseResponse;
 import com.octlr.blog.entity.Article;
 import com.octlr.blog.service.ArticleService;
+import com.octlr.blog.vo.ArticleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ public class ArticleController {
     }
 
     @GetMapping("/search/{id}")
-    public BaseResponse<Article> findArticleById(@PathVariable Integer id)
+    public BaseResponse<ArticleVo> findArticleById(@PathVariable Integer id)
     {
         return BaseResponse.success(articleService.findArticleById(id));
     }
