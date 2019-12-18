@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     public BaseResponse<String> exceptionHandler(Exception e){
         if(e instanceof BaseException) {
             BaseException exception = (BaseException) e;
-            log.error(exception.getMessage());
+            log.error(ExceptionUtils.getStackTrace(exception));
             return BaseResponse.error(exception.getMessage());
         }else if(e instanceof NoHandlerFoundException){
             return BaseResponse.error(CodeMsg.NotFoundError);
