@@ -3,6 +3,7 @@ package com.octlr.blog;
 import com.octlr.blog.common.BasePageResponse;
 import com.octlr.blog.entity.Article;
 import com.octlr.blog.service.ArticleService;
+import com.octlr.blog.vo.ArticleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ class BlogApplicationTests {
 
     @Test
     void findById() {
-        Article article = articleService.findArticleById(1);
+        ArticleVo article = articleService.findArticleById(1);
         System.out.println(article);
     }
 
