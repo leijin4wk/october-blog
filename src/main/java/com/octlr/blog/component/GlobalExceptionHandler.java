@@ -4,6 +4,7 @@ import com.octlr.blog.common.BaseException;
 import com.octlr.blog.common.BaseResponse;
 import com.octlr.blog.common.CodeMsg;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -24,7 +25,7 @@ public class GlobalExceptionHandler {
             return BaseResponse.error(CodeMsg.NotFoundError);
         }
         else {
-            e.printStackTrace();
+            log.error(ExceptionUtils.getStackTrace(e));
             return BaseResponse.error(CodeMsg.ServerError);
         }
     }
