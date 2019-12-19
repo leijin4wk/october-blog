@@ -17,7 +17,7 @@ class BlogApplicationTests {
 
     @Test
     void findByPage() {
-        BasePageResponse<Article> pageResponse = articleService.findArticleByPage( 0, 10);
+        BasePageResponse<Article> pageResponse = articleService.findArticleByPage( 0, 10,null);
         System.out.println(pageResponse);
     }
 
