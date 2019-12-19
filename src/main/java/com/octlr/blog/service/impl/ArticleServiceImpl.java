@@ -24,19 +24,18 @@ public class ArticleServiceImpl implements ArticleService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public BasePageResponse<Article> findArticleByPage(Integer pageNum, Integer pageSize) {
-        Page<Article> page= articleRepository.findByPage(PageRequest.of(pageNum,pageSize));
-        return BasePageResponse.<Article>builder().pageNum(pageNum).pageSize(pageSize)
-                .total(page.getTotalElements()).totalPages(page.getTotalPages())
-                .content(page.getContent()).build();
-    }
-
-    @Override
-    public BasePageResponse<Article> findArticleByCategoryId(Integer categoryId, Integer pageNum, Integer pageSize) {
-        Page<Article> page= articleRepository.findByCategoryId(categoryId,PageRequest.of(pageNum,pageSize));
-        return BasePageResponse.<Article>builder().pageNum(pageNum).pageSize(pageSize)
-                .total(page.getTotalElements()).totalPages(page.getTotalPages())
-                .content(page.getContent()).build();
+    public BasePageResponse<Article> findArticleByPage(Integer pageNum, Integer pageSize,Integer categoryId) {
+        if (categoryId==null){
+            Page<Article> page= articleRepository.findByPage(PageRequest.of(pageNum,pageSize));
+            return BasePageResponse.<Article>builder().pageNum(pageNum).pageSize(pageSize)
+                    .total(page.getTotalElements()).totalPages(page.getTotalPages())
+                    .content(page.getContent()).build();
+        }else{
+            Page<Article> page= articleRepository.findByCategoryId(categoryId,PageRequest.of(pageNum,pageSize));
+            return BasePageResponse.<Article>builder().pageNum(pageNum).pageSize(pageSize)
+                    .total(page.getTotalElements()).totalPages(page.getTotalPages())
+                    .content(page.getContent()).build();
+        }
     }
 
     @Override

@@ -18,22 +18,16 @@ public class ArticleController {
 
     @GetMapping("/search")
     public BaseResponse<BasePageResponse<Article>> findArticleByPage(@RequestParam(defaultValue = "0") Integer pageNum,
-                                                                     @RequestParam(defaultValue = "10")Integer pageSize)
+                                                                     @RequestParam(defaultValue = "10")Integer pageSize,
+                                                                     @RequestParam Integer categoryId)
     {
-        return BaseResponse.success(articleService.findArticleByPage(pageNum,pageSize));
+        return BaseResponse.success(articleService.findArticleByPage(pageNum,pageSize,categoryId));
     }
 
     @GetMapping("/search/{id}")
     public BaseResponse<ArticleVo> findArticleById(@PathVariable Integer id)
     {
         return BaseResponse.success(articleService.findArticleById(id));
-    }
-    @GetMapping("/category/{categoryId}")
-    public BaseResponse<BasePageResponse<Article>> findArticleByCategory(@PathVariable Integer categoryId,
-                                                                         @RequestParam(defaultValue = "0") Integer pageNum,
-                                                                         @RequestParam(defaultValue = "10")Integer pageSize)
-    {
-        return BaseResponse.success(articleService.findArticleByCategoryId(categoryId,pageNum,pageSize));
     }
     @PostMapping("/add")
     public BaseResponse<String> addArticle(@RequestBody Article article)
