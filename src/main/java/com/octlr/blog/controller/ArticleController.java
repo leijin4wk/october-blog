@@ -28,8 +28,8 @@ public class ArticleController {
     {
         return BaseResponse.success(articleService.findArticleById(id));
     }
-    @GetMapping("/category")
-    public BaseResponse<BasePageResponse<Article>> findArticleByCategory(@RequestParam Integer categoryId,
+    @GetMapping("/category/{categoryId}")
+    public BaseResponse<BasePageResponse<Article>> findArticleByCategory(@PathVariable Integer categoryId,
                                                                          @RequestParam(defaultValue = "0") Integer pageNum,
                                                                          @RequestParam(defaultValue = "10")Integer pageSize)
     {
