@@ -51,7 +51,7 @@ class BlogApplicationTests {
         System.out.println(strbody);
     }
 
-   //http://127.0.0.1:4000/login/cellphone?phone=18875016131&password=3880428a
+   //http://127.0.0.1:4000/login/cellphone?phone=xxxx&password=xxx
     @Test
     public void loginNeteaseCloudMusic(){
         String uri=baseUrl+"/login/cellphone?phone=xxxx&password=xxx";
