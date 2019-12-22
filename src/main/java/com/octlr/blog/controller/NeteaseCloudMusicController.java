@@ -1,5 +1,6 @@
 package com.octlr.blog.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.octlr.blog.common.BaseResponse;
 import com.octlr.blog.dto.NeteaseCloudMusicUserDto;
 import com.octlr.blog.service.NeteaseCloudMusicService;
@@ -21,6 +22,6 @@ public class NeteaseCloudMusicController {
         HttpHeaders headers=new HttpHeaders();
         NeteaseCloudMusicUserDto neteaseCloudMusicUserDto=neteaseCloudMusicService.getNeteaseCloudMusicCooike();
         headers.addAll("set-cookie",neteaseCloudMusicUserDto.getCookie());
-        return ResponseEntity.status(200).headers(headers).body(BaseResponse.success(neteaseCloudMusicUserDto.getAccountId()).toString());
+        return ResponseEntity.status(200).headers(headers).body(JSON.toJSONString(BaseResponse.success(neteaseCloudMusicUserDto.getAccountId())));
     }
 }
