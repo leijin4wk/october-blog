@@ -31,6 +31,7 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
         list.add("/api/article/search/*");
         list.add("/api/article/category");
         list.add("/api/category/search");
+        list.add("/api/music/getCookie");
         return list;
     }
     private boolean matchExclusionsPath(String path){

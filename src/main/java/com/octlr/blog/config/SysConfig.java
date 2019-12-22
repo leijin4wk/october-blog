@@ -33,6 +33,8 @@ public class SysConfig implements InitializingBean {
         sysParams.setAccessKeyId(props.getProperty("accessKeyId"));
         sysParams.setAccessKeySecret(props.getProperty("accessKeySecret"));
         sysParams.setAuthToken(props.getProperty("authToken"));
+        sysParams.setPhone(props.getProperty("phone"));
+        sysParams.setPassword(props.getProperty("password"));
         setSysParams(sysParams);
         log.info(sysParams.toString());
     }
@@ -42,6 +44,8 @@ public class SysConfig implements InitializingBean {
         private String accessKeyId;
         private String accessKeySecret;
         private String authToken;
+        private String phone;
+        private String password;
     }
     private Properties readProperty(String configName) {
         File file = new File(configName);
