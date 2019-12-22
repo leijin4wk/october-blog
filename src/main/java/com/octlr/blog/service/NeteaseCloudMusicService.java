@@ -5,4 +5,6 @@ import com.octlr.blog.dto.NeteaseCloudMusicUserDto;
 public interface NeteaseCloudMusicService {
 
     NeteaseCloudMusicUserDto getNeteaseCloudMusicCooike();
+
+    void clearCookie();
 }

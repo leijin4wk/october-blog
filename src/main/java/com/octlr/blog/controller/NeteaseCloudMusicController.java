@@ -17,11 +17,17 @@ public class NeteaseCloudMusicController {
     @Autowired
     private NeteaseCloudMusicService neteaseCloudMusicService;
     @GetMapping("/getCookie")
-    public ResponseEntity<String> findAll()
+    public ResponseEntity<String> getCookie()
     {
         HttpHeaders headers=new HttpHeaders();
         NeteaseCloudMusicUserDto neteaseCloudMusicUserDto=neteaseCloudMusicService.getNeteaseCloudMusicCooike();
         headers.addAll("set-cookie",neteaseCloudMusicUserDto.getCookie());
         return ResponseEntity.status(200).headers(headers).body(JSON.toJSONString(BaseResponse.success(neteaseCloudMusicUserDto.getAccountId())));
+    }
+    @GetMapping("/clear")
+    public BaseResponse<String> findAll()
+    {
+        neteaseCloudMusicService.clearCookie();
+        return BaseResponse.success("ok");
     }
 }

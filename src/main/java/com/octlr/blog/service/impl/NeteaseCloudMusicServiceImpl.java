@@ -51,4 +51,9 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
         }
 
     }
+
+    @Override
+    public void clearCookie() {
+        redisTemplate.delete("octlr:NeteaseCloudMusic:userDto");
+    }
 }
