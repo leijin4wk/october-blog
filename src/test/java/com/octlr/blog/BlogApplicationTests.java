@@ -112,9 +112,8 @@ class BlogApplicationTests {
 
 
         String a="SVfnGYAckObPHLff";
-        byte[] aa=a.getBytes();
+        byte[] bb=EncryptHelper.hexStringToByteArray("594c63495875454c7161585274664e76");
         String b="ffLHPbOkcAYGnfVS";
-        byte[] bb=b.getBytes();
         System.out.println();
     }
 }
