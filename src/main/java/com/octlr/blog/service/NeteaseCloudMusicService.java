@@ -7,4 +7,5 @@ public interface NeteaseCloudMusicService {
     NeteaseCloudMusicUserDto getNeteaseCloudMusicCooike();
 
     void clearCookie();
+
 }

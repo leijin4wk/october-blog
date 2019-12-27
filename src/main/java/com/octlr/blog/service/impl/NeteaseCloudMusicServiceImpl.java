@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.octlr.blog.config.SysConfig;
 import com.octlr.blog.dto.NeteaseCloudMusicUserDto;
 import com.octlr.blog.service.NeteaseCloudMusicService;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -55,5 +58,21 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
     @Override
     public void clearCookie() {
         redisTemplate.delete("octlr:NeteaseCloudMusic:userDto");
+    }
+    @Data
+    class NeteaseCloudMusicBody{
+        private String params;
+        private String encSecKey;
+    }
+    private HttpEntity<NeteaseCloudMusicBody> buildHttpEntity(String data, Map<String,String> cookie){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+        headers.add("Referer","https://music.163.com");
+        List<String> cookies =new ArrayList<>();
+        cookies.add("");
+        headers.put(HttpHeaders.COOKIE,cookies);
+        HttpEntity<NeteaseCloudMusicBody> entity = new HttpEntity<>(headers);
+        return entity;
     }
 }
