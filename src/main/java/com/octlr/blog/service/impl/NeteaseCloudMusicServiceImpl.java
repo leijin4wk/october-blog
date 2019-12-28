@@ -86,6 +86,7 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
     }
     @Override
     public SongUrlVo getSongUrl(Long id) {
+        log.info("getSongUrl start");
         SongUrlVo songUrlVo=new SongUrlVo();
         JSONObject urlParam = new JSONObject();
         urlParam.put("ids", "[" + id + "]");
@@ -101,6 +102,7 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
         ResponseEntity<String> lyricResponseEntity = sendLinuxRequest(NeteaseCloudConfig.songLyric, lyricParam.toJSONString(), new HashMap<>());
         JSONObject songLyricObj = JSONObject.parseObject(lyricResponseEntity.getBody());
         songUrlVo.setLyric(songLyricObj.getJSONObject("lrc").getString("lyric"));
+        log.info("getSongUrl end");
         return songUrlVo;
     }
     private String getProfile() {
