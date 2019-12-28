@@ -8,5 +8,5 @@ public class SongDetailVo  implements Serializable {
     private Long id;
     private String name;
     private String arName;
-    private String picUlr;
+    private String picUrl;
 }

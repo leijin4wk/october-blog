@@ -73,7 +73,7 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
             SongDetailVo songDetailVo = new SongDetailVo();
             songDetailVo.setId(tmp.getLongValue("id"));
             songDetailVo.setName(tmp.getString("name"));
-            songDetailVo.setPicUlr(tmp.getJSONObject("al").getString("picUrl"));
+            songDetailVo.setPicUrl(tmp.getJSONObject("al").getString("picUrl"));
             JSONArray ars = tmp.getJSONArray("ar");
             List<String> arNames = new ArrayList<>();
             for (int j = 0; j < ars.size(); j++) {
