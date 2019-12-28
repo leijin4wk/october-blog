@@ -3,22 +3,20 @@ package com.octlr.blog;
 import com.octlr.blog.common.BasePageResponse;
 import com.octlr.blog.entity.Article;
 import com.octlr.blog.service.ArticleService;
+import com.octlr.blog.service.NeteaseCloudMusicService;
 import com.octlr.blog.util.EncryptHelper;
 import com.octlr.blog.vo.ArticleVo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.*;
-import org.springframework.util.StringUtils;
+
 import org.springframework.web.client.RestTemplate;
 
-import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
+
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +31,9 @@ class BlogApplicationTests {
     private RestTemplate restTemplate;
 
     private String baseUrl="http://127.0.0.1:3000";
+
+    @Autowired
+    private NeteaseCloudMusicService neteaseCloudMusicService;
     @Test
    public void findByPage() {
         BasePageResponse<Article> pageResponse = articleService.findArticleByPage( 0, 10,null);
@@ -93,5 +94,10 @@ class BlogApplicationTests {
         String a="FSxBW1yMY7wyOFUe";
         String bb=EncryptHelper.rsaEncrypt(a,publicKey);
         System.out.println(bb);
+
+    }
+    @Test
+    public void login()  {
+        neteaseCloudMusicService.loginByCellPhone();
     }
 }

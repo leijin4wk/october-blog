@@ -8,4 +8,6 @@ public interface NeteaseCloudMusicService {
 
     void clearCookie();
 
+    void loginByCellPhone();
+
 }
