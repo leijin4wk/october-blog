@@ -16,13 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class NeteaseCloudMusicController {
     @Autowired
     private NeteaseCloudMusicService neteaseCloudMusicService;
-    @GetMapping("/getCookie")
-    public ResponseEntity<String> getCookie()
+    @GetMapping("/getProfile")
+    public BaseResponse<String> getProfile()
     {
-        HttpHeaders headers=new HttpHeaders();
-        NeteaseCloudMusicUserDto neteaseCloudMusicUserDto=neteaseCloudMusicService.getNeteaseCloudMusicCooike();
-        headers.addAll("set-cookie",neteaseCloudMusicUserDto.getCookie());
-        return ResponseEntity.status(200).headers(headers).body(JSON.toJSONString(BaseResponse.success(neteaseCloudMusicUserDto.getAccountId())));
+        return BaseResponse.success(neteaseCloudMusicService.getProfile());
     }
     @GetMapping("/clear")
     public BaseResponse<String> findAll()

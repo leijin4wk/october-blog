@@ -9,11 +9,13 @@ import com.octlr.blog.service.NeteaseCloudMusicService;
 import com.octlr.blog.util.EncryptHelper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -34,30 +38,21 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
     private RestTemplate restTemplate;
     @Autowired
     private SysConfig sysConfig;
-    @Value("${music.base.url}")
-    private String NeteaseCloudMusicUrl;
-
+//sysConfig.getSysParams().getPhone() + "&password=" + sysConfig.getSysParams().getPassword()
     @Override
-    public NeteaseCloudMusicUserDto getNeteaseCloudMusicCooike(){
-        String value=redisTemplate.opsForValue().get("octlr:NeteaseCloudMusic:userDto");
-        if (StringUtils.isEmpty(value)) {
-            log.info("new request！");
-            String uri = NeteaseCloudMusicUrl + "/login/cellphone?phone=" + sysConfig.getSysParams().getPhone() + "&password=" + sysConfig.getSysParams().getPassword();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<String> entity = new HttpEntity<>(headers);
-            ResponseEntity responseEntity = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
-            NeteaseCloudMusicUserDto neteaseCloudMusicUserDto=new NeteaseCloudMusicUserDto();
-            Long accountId=JSON.parseObject(responseEntity.getBody().toString()).getJSONObject("account").getLong("id");
-            neteaseCloudMusicUserDto.setAccountId(accountId);
-            log.info(responseEntity.toString());
-            List<String> cookies=responseEntity.getHeaders().get("set-cookie");
-            neteaseCloudMusicUserDto.setCookie(cookies);
-            redisTemplate.opsForValue().set("octlr:NeteaseCloudMusic:userDto", JSON.toJSONString(neteaseCloudMusicUserDto), 2, TimeUnit.HOURS);
-            return neteaseCloudMusicUserDto;
-        }else{
-            return JSON.parseObject(value,NeteaseCloudMusicUserDto.class);
+    public String getProfile(){
+        String value=redisTemplate.opsForValue().get("octlr:NeteaseCloudMusic:profile");
+        if (!StringUtils.isEmpty(value)){
+            return value;
         }
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("phone",sysConfig.getSysParams().getPhone());
+        jsonObject.put("password", DigestUtils.md5Hex(sysConfig.getSysParams().getPassword()));
+        jsonObject.put("rememberLogin","true");
+        Map<String,String> cookie=new HashMap<>();
+        cookie.put("os","pc");
+        sendRequest(NeteaseCloudConfig.loginCellphone,1,jsonObject.toJSONString(),cookie);
+        return redisTemplate.opsForValue().get("octlr:NeteaseCloudMusic:profile");
 
     }
 
@@ -80,11 +75,15 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
     }
 
     private  ResponseEntity<String> sendRequest(String url,int apiType, String data,Map<String,String> cookie){
+        String value=redisTemplate.opsForValue().get("octlr:NeteaseCloudMusic:csrf_token");
+        if (StringUtils.isEmpty(value)){
+            value="";
+        }
         HttpEntity<String> entity;
         if (apiType==1) {
-//            JSONObject jsonObject=JSON.parseObject(data);
-//            jsonObject.put("csrf_token","");
-            entity = buildHttpEntity(apiType,data,cookie);
+            JSONObject jsonObject=JSON.parseObject(data);
+            jsonObject.put("csrf_token",value);
+            entity = buildHttpEntity(apiType,jsonObject.toJSONString(),cookie);
         }else{
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("method","POST");
@@ -92,8 +91,32 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
             jsonObject.put("params",JSON.parseObject(data));
             entity = buildHttpEntity(apiType,jsonObject.toJSONString(),cookie);
         }
-        ResponseEntity responseEntity = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-        System.out.println(responseEntity.getHeaders().toString());
+        ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+        HttpHeaders httpHeaders= responseEntity.getHeaders();
+        List<String> list=httpHeaders.get("set-cookie");
+        if(!CollectionUtils.isEmpty(list)) {
+            List<String> cookies = new ArrayList<>();
+            String pattern = "_csrf=([^(;|$)]+)";
+            // 创建 Pattern 对象
+            Pattern r = Pattern.compile(pattern);
+            for (String item : list) {
+                cookies.add(item.replaceFirst("\\s*Domain=[^(;|$)]+;*", ""));
+                // 现在创建 matcher 对象
+                Matcher m = r.matcher(item);
+                if (m.find()) {
+                   String tmp= m.group(0);
+                   String[] strings= tmp.split("=");
+                   if (strings.length==2) {
+                       redisTemplate.opsForValue().set("octlr:NeteaseCloudMusic:csrf_token", strings[1], 7100, TimeUnit.SECONDS);
+                   }
+                }
+            }
+            String body=responseEntity.getBody();
+            JSONObject jsonObject=JSON.parseObject(body);
+            JSONObject profile=jsonObject.getJSONObject("profile");
+            redisTemplate.opsForValue().set("octlr:NeteaseCloudMusic:cookie", JSON.toJSONString(cookies), 7100, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set("octlr:NeteaseCloudMusic:profile", profile.toJSONString(), 7100, TimeUnit.SECONDS);
+        }
         return responseEntity;
     }
     /**
@@ -104,6 +127,7 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
      * @return
      */
     private HttpEntity<String> buildHttpEntity(int apiType, String data, Map<String,String> cookie){
+        String cookieCache=redisTemplate.opsForValue().get("octlr:NeteaseCloudMusic:cookie");
         HttpHeaders headers = new HttpHeaders();
         headers.add("accept","*/*");
         headers.add("referer","https://music.163.com");
@@ -111,6 +135,9 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
         List<String> cookies =new ArrayList<>();
         for (String key:cookie.keySet()) {
             cookies.add(key+"="+cookie.get(key));
+        }
+        if (!StringUtils.isEmpty(cookieCache)){
+            cookies.addAll(JSON.parseArray(cookieCache,String.class));
         }
         headers.put(HttpHeaders.COOKIE,cookies);
         HttpEntity<String> entity;
@@ -125,15 +152,10 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
     }
 
     private String  buildWebApiBody(String json){
-        System.out.println(NeteaseCloudConfig.presetKey);
-        System.out.println(NeteaseCloudConfig.iv);
-        System.out.println(json);
         StringBuilder result=new StringBuilder();
-        String secretKey= "2nTVKmx9y3BZUyJW";
+        String secretKey= EncryptHelper.getRandomString(16);
         StringBuilder sb=new StringBuilder(secretKey);
         String temp=EncryptHelper.aesEncrypt(json, NeteaseCloudConfig.presetKey,NeteaseCloudConfig.iv);
-        System.out.println(temp);
-        System.out.println(secretKey);
         try {
             result.append("params=").append(URLEncoder.encode(EncryptHelper.aesEncrypt(temp, secretKey, NeteaseCloudConfig.iv), "utf-8")).append("&");
             result.append("encSecKey=").append(URLEncoder.encode(EncryptHelper.rsaEncrypt(sb.reverse().toString(), NeteaseCloudConfig.publicKey), "utf-8"));
