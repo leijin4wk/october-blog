@@ -4,22 +4,18 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.octlr.blog.config.NeteaseCloudConfig;
 import com.octlr.blog.config.SysConfig;
-import com.octlr.blog.dto.NeteaseCloudMusicUserDto;
 import com.octlr.blog.service.NeteaseCloudMusicService;
 import com.octlr.blog.util.EncryptHelper;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +34,6 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
     private RestTemplate restTemplate;
     @Autowired
     private SysConfig sysConfig;
-//sysConfig.getSysParams().getPhone() + "&password=" + sysConfig.getSysParams().getPassword()
     @Override
     public String getProfile(){
         String value=redisTemplate.opsForValue().get("octlr:NeteaseCloudMusic:profile");
@@ -55,23 +50,9 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
         return redisTemplate.opsForValue().get("octlr:NeteaseCloudMusic:profile");
 
     }
-
     @Override
-    public void clearCookie() {
-        redisTemplate.delete("octlr:NeteaseCloudMusic:userDto");
-    }
-
-    @Override
-    public void loginByCellPhone() {
-        String json="{" +
-                "\"phone\":\"18875016131\"," +
-                "\"password\":\"fb15f40d7db80ac09a91f051b7a30c31\"," +
-                "\"rememberLogin\":\"true\"," +
-                "\"csrf_token\":\"\""+
-                "}";
-        Map<String,String> cookie=new HashMap<>();
-        cookie.put("os","pc");
-        sendRequest(NeteaseCloudConfig.loginCellphone,1,json,cookie);
+    public String getLikeList() {
+        return null;
     }
 
     private  ResponseEntity<String> sendRequest(String url,int apiType, String data,Map<String,String> cookie){

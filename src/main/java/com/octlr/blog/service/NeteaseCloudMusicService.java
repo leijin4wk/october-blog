@@ -1,13 +1,9 @@
 package com.octlr.blog.service;
 
-import com.octlr.blog.dto.NeteaseCloudMusicUserDto;
-
 public interface NeteaseCloudMusicService {
 
     String getProfile();
 
-    void clearCookie();
-
-    void loginByCellPhone();
+    String getLikeList();
 
 }
