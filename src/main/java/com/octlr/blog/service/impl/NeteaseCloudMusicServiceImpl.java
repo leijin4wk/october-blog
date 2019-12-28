@@ -51,7 +51,6 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
         JSONObject likeListParam = new JSONObject();
         likeListParam.put("uid", profile.getString("userId"));
         ResponseEntity<String> likeListResponseEntity = sendWebRequest(NeteaseCloudConfig.likeList, likeListParam.toJSONString(), new HashMap<>());
-        log.info("likeList:{}", likeListResponseEntity.getBody());
         JSONObject songIds = JSONObject.parseObject(likeListResponseEntity.getBody());
         JSONObject detailListParam = new JSONObject();
         JSONArray array = songIds.getJSONArray("ids");
@@ -64,7 +63,6 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
         detailListParam.put("ids", songIds.getJSONArray("ids").toJSONString());
         detailListParam.put("c", c.toJSONString());
         ResponseEntity<String> detailResponseEntity = sendWebRequest(NeteaseCloudConfig.songDetail, detailListParam.toJSONString(), new HashMap<>());
-        log.info("detailList:{}", detailResponseEntity.getBody());
         JSONObject songDetail = JSONObject.parseObject(detailResponseEntity.getBody());
         JSONArray jsonArray = songDetail.getJSONArray("songs");
         List<SongDetailVo> result = new ArrayList<>();
