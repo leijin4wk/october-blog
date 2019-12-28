@@ -29,7 +29,8 @@ class BlogApplicationTests {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private RestTemplate restTemplate;
-
+    @Autowired
+    private NeteaseCloudMusicService neteaseCloudMusicService;
     @Test
     public void findByPage() {
         BasePageResponse<Article> pageResponse = articleService.findArticleByPage(0, 10, null);
@@ -56,5 +57,22 @@ class BlogApplicationTests {
         String strbody = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class).getBody();
         System.out.println(strbody);
     }
-
+    @Test
+    public void loginNeteaseCloudMusic(){
+        String uri="http://127.0.0.1:3000/lyric?id=465161337";
+        System.out.println(uri);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity r=restTemplate.exchange(uri, HttpMethod.GET, entity,String.class);
+        System.out.println(r);
+    }
+    @Test
+    public void getLikeList() {
+        neteaseCloudMusicService.getLikeList();
+    }
+    @Test
+    public void getSongUrl() {
+        neteaseCloudMusicService.getSongUrl(465161337L);
+    }
 }

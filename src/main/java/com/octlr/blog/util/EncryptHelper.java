@@ -14,14 +14,26 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class EncryptHelper {
-    public static String aesEncrypt(String str, String keyBytes, String ivBytes) {
+    public static String aesEncryptWithIv(String str, String keyBytes, String ivBytes) {
         try {
             SecretKeySpec key = new SecretKeySpec(keyBytes.getBytes(), "AES");
             IvParameterSpec iv = new IvParameterSpec(ivBytes.getBytes());
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING"); // 确定算法
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING"); ////"算法/模式/补码方式"
             cipher.init(Cipher.ENCRYPT_MODE, key, iv);    // 确定密钥
             byte[] result = cipher.doFinal(str.getBytes());  // 加密
             return Base64.encodeBase64String(result);  // 不进行Base64编码的话，那么这个字节数组对应的字符串就是乱码
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static String aesEncrypt(String str, String keyBytes) {
+        try {
+            SecretKeySpec key = new SecretKeySpec(keyBytes.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING"); // //"算法/模式/补码方式"
+            cipher.init(Cipher.ENCRYPT_MODE, key);    // 确定密钥
+            byte[] result = cipher.doFinal(str.getBytes());  // 加密
+            return bytesToHex(result) ;  // 不进行Base64编码的话，那么这个字节数组对应的字符串就是乱码
         } catch (Exception e) {
             e.printStackTrace();
             return null;
