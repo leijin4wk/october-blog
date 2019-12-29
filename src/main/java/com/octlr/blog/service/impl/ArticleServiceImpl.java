@@ -28,7 +28,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Cacheable(value="songUrl", key="targetClass +':'+ methodName +':'+#pageNum+#pageSize+#categoryId")
     public BasePageResponse<Article> findArticleByPage(Integer pageNum, Integer pageSize,Integer categoryId) {
-        if (categoryId==null){
+        if (categoryId.equals(-1)){
             Page<Article> page= articleRepository.findByPage(PageRequest.of(pageNum,pageSize));
             return BasePageResponse.<Article>builder().pageNum(pageNum).pageSize(pageSize)
                     .total(page.getTotalElements()).totalPages(page.getTotalPages())

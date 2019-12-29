@@ -19,7 +19,7 @@ public class ArticleController {
     @GetMapping("/search")
     public BaseResponse<BasePageResponse<Article>> findArticleByPage(@RequestParam(defaultValue = "0") Integer pageNum,
                                                                      @RequestParam(defaultValue = "10")Integer pageSize,
-                                                                     @RequestParam(required = false) Integer categoryId)
+                                                                     @RequestParam(defaultValue = "-1") Integer categoryId)
     {
         return BaseResponse.success(articleService.findArticleByPage(pageNum,pageSize,categoryId));
     }
