@@ -26,7 +26,6 @@ public class ArticleServiceImpl implements ArticleService {
     private CategoryRepository categoryRepository;
 
     @Override
-    @Cacheable(value="songUrl", key="targetClass +':'+ methodName +':'+#pageNum+#pageSize+#categoryId")
     public BasePageResponse<Article> findArticleByPage(Integer pageNum, Integer pageSize,Integer categoryId) {
         if (categoryId.equals(-1)){
             Page<Article> page= articleRepository.findByPage(PageRequest.of(pageNum,pageSize));
@@ -42,7 +41,6 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    @Cacheable(value="articleVos", key="targetClass +':'+ methodName +':'+#id")
     public ArticleVo findArticleById(Integer id) {
         Article article=articleRepository.findById(id).get();
         if (article==null){

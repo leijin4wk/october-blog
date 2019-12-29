@@ -41,7 +41,6 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
     private SysConfig sysConfig;
 
     @Override
-    @Cacheable(value="likeList", key="targetClass +':'+ methodName")
     public List<SongDetailVo> getLikeList() {
         log.info("getLikeList start");
         String value = redisTemplate.opsForValue().get("octlr:NeteaseCloudMusic:profile");
@@ -87,7 +86,6 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
         return result;
     }
     @Override
-    @Cacheable(value="songUrl", key="targetClass +':'+ methodName +':'+#id")
     public SongUrlVo getSongUrl(Long id) {
         log.info("getSongUrl start");
         SongUrlVo songUrlVo=new SongUrlVo();
