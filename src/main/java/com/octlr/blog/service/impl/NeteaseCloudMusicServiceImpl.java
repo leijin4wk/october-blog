@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
     private SysConfig sysConfig;
 
     @Override
+    @Cacheable(value="likeList", key="targetClass +':'+ methodName")
     public List<SongDetailVo> getLikeList() {
         log.info("getLikeList start");
         String value = redisTemplate.opsForValue().get("octlr:NeteaseCloudMusic:profile");
@@ -85,6 +87,7 @@ public class NeteaseCloudMusicServiceImpl implements NeteaseCloudMusicService {
         return result;
     }
     @Override
+    @Cacheable(value="songUrl", key="targetClass +':'+ methodName +':'+#id")
     public SongUrlVo getSongUrl(Long id) {
         log.info("getSongUrl start");
         SongUrlVo songUrlVo=new SongUrlVo();

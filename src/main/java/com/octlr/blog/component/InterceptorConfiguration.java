@@ -1,6 +1,7 @@
-package com.octlr.blog.config;
+package com.octlr.blog.component;
 
 import com.octlr.blog.component.HttpInterceptor;
+import com.octlr.blog.config.SysConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

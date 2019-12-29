@@ -11,9 +11,11 @@ import com.octlr.blog.vo.ArticleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
 
 @Slf4j
 @Service
@@ -24,6 +26,7 @@ public class ArticleServiceImpl implements ArticleService {
     private CategoryRepository categoryRepository;
 
     @Override
+    @Cacheable(value="songUrl", key="targetClass +':'+ methodName +':'+#pageNum+#pageSize+#categoryId")
     public BasePageResponse<Article> findArticleByPage(Integer pageNum, Integer pageSize,Integer categoryId) {
         if (categoryId==null){
             Page<Article> page= articleRepository.findByPage(PageRequest.of(pageNum,pageSize));
@@ -39,6 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Cacheable(value="articleVos", key="targetClass +':'+ methodName +':'+#id")
     public ArticleVo findArticleById(Integer id) {
         Article article=articleRepository.findById(id).get();
         if (article==null){
